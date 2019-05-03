@@ -57,7 +57,7 @@ def _add_initial_values():
 
 app.register_blueprint(login_api)
 app.register_blueprint(user_api)
-# app.register_blueprint(project_api)
+app.register_blueprint(project_api)
 
 
 if __name__ == '__main__':
