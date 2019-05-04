@@ -4,6 +4,7 @@ from model import *
 from login import login_api
 from project import project_api
 from user import user_api
+from request import request_api
 from flask_heroku import Heroku
 
 import os
@@ -50,14 +51,43 @@ def _add_initial_values():
     db.session.add(project)
     db.session.commit()
 
+    request_one = Request(name='Request uno',
+                          method='GET',
+                          url='http://google.com',
+                          body='{"key": "value"}'
+                          )
+    db.session.add(request_one)
+    request_two = Request(name='Request two',
+                          method='POST',
+                          url='http://reddit.com',
+                          body='{"key": "value"}'
+                          )
+    db.session.add(request_two)
+    db.session.commit()
+
+    header_one = Header(key="clave", value="value")
+    header_two = Header(key="otra_clave", value="otro_value")
+    db.session.add(header_one)
+    db.session.commit()
+    db.session.add(header_two)
+    db.session.commit()
+
     admin.projects.append(projectTwo)
     admin.projects.append(project)
+
+    project.requests.append(request_one)
+    project.requests.append(request_two)
+
+    request_one.headers.append(header_one)
+    request_one.headers.append(header_two)
+
     db.session.commit()
 
 
 app.register_blueprint(login_api)
 app.register_blueprint(user_api)
 app.register_blueprint(project_api)
+app.register_blueprint(request_api)
 
 
 if __name__ == '__main__':
