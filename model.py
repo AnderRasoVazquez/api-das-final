@@ -62,6 +62,28 @@ class Request(db.Model):
     headers = db.relationship('Header', backref=db.backref('request'))
 
 
+_request_creation_schema = {
+    'name': {'type': 'string', 'required': True, 'empty': False},
+}
+create_request_validator = Validator(_request_creation_schema)
+
+_request_update_schema = {
+    'name': {'type': 'string', 'empty': False},
+    'url': {'type': 'string', 'empty': False},
+    'body': {'type': 'string', 'empty': False},
+    'method': {'type': 'string', 'empty': False},
+    'headers': {'type': 'list', 'empty': False,
+                'schema': {'type': 'dict', 'schema': {
+                                                        'key': {'type': 'string', 'empty': False},
+                                                        'value': {'type': 'string', 'empty': False},
+                                                      }
+                           }
+                }
+}
+
+update_request_validator = Validator(_request_update_schema)
+
+
 class Header(db.Model):
     """Tabla header de la base de datos"""
     header_id = db.Column(db.String(50), primary_key=True, default=generate_uuid)
@@ -96,7 +118,31 @@ class ProjectSchema(ma.ModelSchema):
     )
 
 
+class RequestSchema(ma.ModelSchema):
+    """Esquema para la clase proyectos."""
+
+    class Meta:
+        model = Request
+
+    headers = ma.Nested('HeaderSchema', many=True, exclude=('header_id', 'request'))
+    _links = ma.Hyperlinks(
+        {"self": ma.URLFor("request_api.get_one_request", request_id="<request_id>"),
+         "collection": ma.URLFor("request_api.get_project_requests", project_id="<project_id>")}
+    )
+
+
+class HeaderSchema(ma.ModelSchema):
+    """Esquema para la clase Header."""
+
+    class Meta:
+        model = Header
+
+
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 project_schema = ProjectSchema()
 projects_schema = ProjectSchema(many=True)
+request_schema = RequestSchema()
+requests_schema = RequestSchema(many=True)
+header_schema = HeaderSchema()
+headers_schema = HeaderSchema(many=True)
