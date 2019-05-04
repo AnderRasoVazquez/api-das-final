@@ -70,9 +70,9 @@ create_request_validator = Validator(_request_creation_schema)
 _request_update_schema = {
     'name': {'type': 'string', 'empty': False},
     'url': {'type': 'string', 'empty': False},
-    'body': {'type': 'string', 'empty': False},
+    'body': {'type': 'string'},
     'method': {'type': 'string', 'empty': False},
-    'headers': {'type': 'list', 'empty': False,
+    'headers': {'type': 'list',
                 'schema': {'type': 'dict', 'schema': {
                                                         'key': {'type': 'string', 'empty': False},
                                                         'value': {'type': 'string', 'empty': False},
