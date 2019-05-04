@@ -59,6 +59,17 @@ class Request(db.Model):
 
     project_id = db.Column(db.String(50), db.ForeignKey('project.project_id'))
 
+    headers = db.relationship('Header', backref=db.backref('request'))
+
+
+class Header(db.Model):
+    """Tabla header de la base de datos"""
+    header_id = db.Column(db.String(50), primary_key=True, default=generate_uuid)
+    key = db.Column(db.String(100), nullable=False)
+    value = db.Column(db.String(100), nullable=False)
+
+    request_id = db.Column(db.String(50), db.ForeignKey('request.request_id'))
+
 
 class UserSchema(ma.ModelSchema):
     """Esquema para la clase usuario."""
