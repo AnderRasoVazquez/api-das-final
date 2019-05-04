@@ -57,7 +57,7 @@ def get_one_project(current_user, project_id):
         return jsonify({'message': 'No project found!'}), 404
 
     if current_user != project.user:
-        return jsonify({'message': 'You don\'t have permission to delete that project!'}), 403
+        return jsonify({'message': 'You don\'t have permission to access that project!'}), 403
 
     return jsonify({'project': project_schema.dump(project).data})
 
