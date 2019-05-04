@@ -33,7 +33,7 @@ class Project(db.Model):
     project_id = db.Column(db.String(50), primary_key=True, default=generate_uuid)
     name = db.Column(db.String(100), nullable=False)
 
-    user_id = db.Column(db.String(50), db.ForeignKey('user.user_id'))
+    user_id = db.Column(db.String(50), db.ForeignKey('user.user_id', ondelete='CASCADE'))
 
     requests = db.relationship('Request', backref=db.backref('project'))
 
@@ -57,7 +57,7 @@ class Request(db.Model):
     body = db.Column(db.Text)
     method = db.Column(db.String(50))
 
-    project_id = db.Column(db.String(50), db.ForeignKey('project.project_id'))
+    project_id = db.Column(db.String(50), db.ForeignKey('project.project_id', ondelete='CASCADE'))
 
     headers = db.relationship('Header', backref=db.backref('request'))
 
@@ -68,7 +68,7 @@ class Header(db.Model):
     key = db.Column(db.String(100), nullable=False)
     value = db.Column(db.String(100), nullable=False)
 
-    request_id = db.Column(db.String(50), db.ForeignKey('request.request_id'))
+    request_id = db.Column(db.String(50), db.ForeignKey('request.request_id', ondelete='CASCADE'))
 
 
 class UserSchema(ma.ModelSchema):
