@@ -35,6 +35,7 @@ class Project(db.Model):
 
     user_id = db.Column(db.String(50), db.ForeignKey('user.user_id'))
 
+    requests = db.relationship('Request', backref=db.backref('project'))
 
 
 _project_creation_schema = {
@@ -46,6 +47,17 @@ _project_update_schema = {
     'name': {'type': 'string', 'empty': False},
 }
 update_project_validator = Validator(_project_update_schema)
+
+
+class Request(db.Model):
+    """Tabla request de la base de datos"""
+    request_id = db.Column(db.String(50), primary_key=True, default=generate_uuid)
+    name = db.Column(db.String(100), nullable=False)
+    url = db.Column(db.String(500))
+    body = db.Column(db.Text)
+    method = db.Column(db.String(50))
+
+    project_id = db.Column(db.String(50), db.ForeignKey('project.project_id'))
 
 
 class UserSchema(ma.ModelSchema):
