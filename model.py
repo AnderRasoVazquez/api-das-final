@@ -55,7 +55,7 @@ class Request(db.Model):
     name = db.Column(db.String(100), nullable=False)
     url = db.Column(db.String(500))
     body = db.Column(db.Text)
-    method = db.Column(db.String(50))
+    method = db.Column(db.String(50), default="GET")
 
     project_id = db.Column(db.String(50), db.ForeignKey('project.project_id', ondelete='CASCADE'))
 
