@@ -112,6 +112,6 @@ def update_request(data, current_user, request_id):
                     header = Header(**new_header_data)
                     one_request.headers.append(header)
         db.session.commit()
-        return jsonify({'message': 'Request updated!', 'project': request_schema.dump(one_request).data})
+        return jsonify({'message': 'Request updated!', 'request': request_schema.dump(one_request).data})
     else:
         return jsonify({'message': 'Request not updated!', 'errors': update_request_validator.errors}), 400
