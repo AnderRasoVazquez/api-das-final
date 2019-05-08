@@ -13,11 +13,12 @@ def create_user(data):
     """Crea un usuario."""
     if create_user_validator.validate(data):
         # Check if user exists
-        if User.query.filter_by(email=data['email']).first():
+        email = data['email'].lower()
+        if User.query.filter_by(email=email).first():
             return jsonify({'message': 'User already exists'}), 409
 
         hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = User(email=data['email'], password=hashed_password)
+        new_user = User(email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
