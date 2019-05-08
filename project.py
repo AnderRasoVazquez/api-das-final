@@ -78,9 +78,8 @@ def update_project(data, current_user, project_id):
         return jsonify({'message': 'You don\'t have permission to delete that project!'}), 403
 
     if update_project_validator.validate(data):
+        # no actualizar si ya existe un proyecto con ese nombre
         if Project.query.filter(Project.name == data['name'], Project.project_id != project.project_id).first():
-        # if Project.query.filter(Project.name == data['name'] and Project.project_id != project.project_id).first():
-        # if Project.query.filter_by(name=data['name']).first():
             return jsonify({'message': 'A project with that name already exists'}), 409
         for key, value in data.items():
             setattr(project, key, value)
