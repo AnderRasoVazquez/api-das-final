@@ -97,6 +97,9 @@ def update_request(data, current_user, request_id):
 
     if update_request_validator.validate(data):
         # eliminar las header anteriores
+        if Request.query.filter(Request.name == data['name'], Request.request_id != one_request.request_id).first():
+            return jsonify({'message': 'A request with that name already exists'}), 409
+
         for previous_header in one_request.headers:
             db.session.delete(previous_header)
 
