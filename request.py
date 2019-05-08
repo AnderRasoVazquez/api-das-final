@@ -22,7 +22,9 @@ def get_project_requests(current_user, project_id):
     the_requests = project.requests
 
     output = requests_schema.dump(the_requests)
-    return jsonify({"requests": output.data})
+    data = output.data
+    data.sort(key=lambda x: x["name"])
+    return jsonify({"requests": data})
 
 
 @request_api.route('/api/v1/requests/<request_id>', methods=['GET'])

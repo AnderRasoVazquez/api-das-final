@@ -12,7 +12,9 @@ def get_user_projects(current_user):
     """Devolver todos los proyectos."""
     projects = current_user.projects
     output = projects_schema.dump(projects)
-    return jsonify({"projects": output.data})
+    data = output.data
+    data.sort(key=lambda x: x["name"])
+    return jsonify({"projects": data})
 
 
 @project_api.route('/api/v1/projects', methods=['POST'])
