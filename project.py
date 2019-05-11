@@ -13,7 +13,7 @@ def get_user_projects(current_user):
     projects = current_user.projects
     output = projects_schema.dump(projects)
     data = output.data
-    data.sort(key=lambda x: x["name"])
+    data.sort(key=lambda x: x["name"].lower())
     return jsonify({"projects": data})
 
 

@@ -23,7 +23,7 @@ def get_project_requests(current_user, project_id):
 
     output = requests_schema.dump(the_requests)
     data = output.data
-    data.sort(key=lambda x: x["name"])
+    data.sort(key=lambda x: x["name"].lower())
     return jsonify({"requests": data})
 
 
