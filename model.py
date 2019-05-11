@@ -18,7 +18,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(80), nullable=False)
 
-    projects = db.relationship('Project', backref=db.backref('user'))
+    projects = db.relationship('Project', backref=db.backref('user'), cascade="all, delete-orphan")
 
 
 _user_creation_schema = {
@@ -35,7 +35,7 @@ class Project(db.Model):
 
     user_id = db.Column(db.String(50), db.ForeignKey('user.user_id', ondelete='CASCADE'))
 
-    requests = db.relationship('Request', backref=db.backref('project'))
+    requests = db.relationship('Request', backref=db.backref('project'), cascade="all, delete-orphan")
 
 
 _project_creation_schema = {
@@ -59,7 +59,7 @@ class Request(db.Model):
 
     project_id = db.Column(db.String(50), db.ForeignKey('project.project_id', ondelete='CASCADE'))
 
-    headers = db.relationship('Header', backref=db.backref('request'))
+    headers = db.relationship('Header', backref=db.backref('request'), cascade="all, delete-orphan")
 
 
 _request_creation_schema = {
