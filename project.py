@@ -23,7 +23,7 @@ def get_user_projects(current_user):
 def create_project(data, current_user: User):
     """Crea un proyecto."""
     if create_project_validator.validate(data):
-        if Project.query.filter_by(name=data['name']).first():
+        if Project.query.filter_by(name=data['name'], user_id=current_user.user_id).first():
             return jsonify({'message': 'A project with that name already exists'}), 409
         project = Project(**data)
         db.session.add(project)

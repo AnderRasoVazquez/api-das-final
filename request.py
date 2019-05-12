@@ -56,8 +56,9 @@ def create_request(data, current_user: User, project_id):
         return jsonify({'message': 'You don\'t have permission to create a request in that project!'}), 403
 
     if create_request_validator.validate(data):
-        if Request.query.filter_by(name=data['name']).first():
-            return jsonify({'message': 'A request with that name already exists'}), 409
+        for req in project.requests:
+            if req.name == data['name']:
+                return jsonify({'message': 'A request with that name already exists'}), 409
         one_request = Request(**data)
         db.session.add(one_request)
         project.requests.append(one_request)
